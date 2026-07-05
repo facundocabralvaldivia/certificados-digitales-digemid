@@ -8,6 +8,11 @@ import type { EstablecimientoCanonical } from '../batch/types';
 const DATA_DIR = join(__dirname, '..', '..', 'data');
 
 async function ensureDatabase(): Promise<void> {
+  // En Azure SQL la BD se crea en el portal; CREATE DATABASE en master suele fallar o ser innecesario.
+  if (env.DB_SERVER.includes('.database.windows.net')) {
+    logger.info('Azure SQL: usando BD existente en portal', { db: env.DB_NAME });
+    return;
+  }
   const master = await connectMaster();
   try {
     await master
