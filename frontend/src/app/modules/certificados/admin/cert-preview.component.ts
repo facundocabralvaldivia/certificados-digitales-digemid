@@ -5,9 +5,10 @@ import {
   Input,
   Output,
   computed,
+  effect,
   signal,
 } from '@angular/core';
-import { QRCodeComponent } from 'angularx-qrcode';
+import QRCode from 'qrcode';
 
 import { CertificadoPublicoRead } from '../../../core/models/certificados.models';
 import { environment } from '../../../../environments/environment';
@@ -20,7 +21,6 @@ import { environment } from '../../../../environments/environment';
   selector: 'app-cert-preview',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [QRCodeComponent],
   template: `
     @if (cert(); as c) {
       <div class="space-y-4">
@@ -55,13 +55,22 @@ import { environment } from '../../../../environments/environment';
             </dl>
 
             <div class="flex flex-col items-center gap-1">
-              <qrcode
-                [qrdata]="urlVerificacion()"
-                [width]="112"
-                [errorCorrectionLevel]="'M'"
-                cssClass="rounded-lg border-2 border-dicer-cert-primary"
-                aria-label="Código QR de verificación"
-              />
+              @if (qrDataUrl()) {
+                <img
+                  [src]="qrDataUrl()"
+                  width="112"
+                  height="112"
+                  alt="Código QR de verificación"
+                  class="rounded-lg border-2 border-dicer-cert-primary"
+                />
+              } @else {
+                <div
+                  class="grid h-28 w-28 place-items-center rounded-lg border-2 border-dicer-cert-primary bg-dicer-cert-mint/20"
+                  aria-hidden="true"
+                >
+                  <span class="text-[0.55rem] font-bold text-dicer-cert-secondary">QR…</span>
+                </div>
+              }
               <span class="font-mono text-[0.55rem] text-dicer-cert-secondary">{{ c.codigo_verificacion }}</span>
             </div>
           </div>
@@ -107,6 +116,7 @@ import { environment } from '../../../../environments/environment';
 export class CertPreviewComponent {
   private readonly _cert = signal<CertificadoPublicoRead | null>(null);
   private readonly _emitiendo = signal<boolean>(false);
+  protected readonly qrDataUrl = signal<string>('');
 
   @Input({ required: true })
   set certificado(value: CertificadoPublicoRead) {
@@ -126,6 +136,21 @@ export class CertPreviewComponent {
   protected readonly cert = computed(() => this._cert());
   protected readonly emitiendoFlag = computed(() => this._emitiendo());
 
+  constructor() {
+    effect(() => {
+      const c = this._cert();
+      if (!c) {
+        this.qrDataUrl.set('');
+        return;
+      }
+      const base = environment.publicSiteUrl.replace(/\/$/, '');
+      const url = `${base}/verificar/${encodeURIComponent(c.codigo_verificacion)}`;
+      void QRCode.toDataURL(url, { width: 112, margin: 1, errorCorrectionLevel: 'M' }).then(
+        (dataUrl) => this.qrDataUrl.set(dataUrl),
+      );
+    });
+  }
+
   protected confirmarEmision(): void {
     const c = this._cert();
     if (c) {
@@ -133,14 +158,10 @@ export class CertPreviewComponent {
     }
   }
 
-  protected urlVerificacion(): string {
+  protected urlPublica(): string {
     const c = this._cert();
-    if (!c) return '';
+    if (!c) return '#';
     const base = environment.publicSiteUrl.replace(/\/$/, '');
     return `${base}/verificar/${encodeURIComponent(c.codigo_verificacion)}`;
-  }
-
-  protected urlPublica(): string {
-    return this.urlVerificacion() || '#';
   }
 }
