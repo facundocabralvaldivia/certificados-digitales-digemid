@@ -9,9 +9,15 @@ import { logger } from './shared/logger';
 
 const app = express();
 
+const corsOrigins = [
+  'http://localhost:4200',
+  'http://127.0.0.1:4200',
+  'https://witty-sea-0ecb8120f.7.azurestaticapps.net',
+];
+
 app.use(
   cors({
-    origin: ['http://localhost:4200', 'http://127.0.0.1:4200'],
+    origin: corsOrigins,
     credentials: true,
   }),
 );
