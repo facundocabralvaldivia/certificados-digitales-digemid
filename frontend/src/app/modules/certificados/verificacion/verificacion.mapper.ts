@@ -6,7 +6,7 @@ import {
 } from '../../../core/models/certificados.models';
 import { VerificacionResponse } from '../../../core/services/verificacion-blockchain.service';
 
-const PDF_DEFAULT = '/CERTIFICADO OFICIAL.pdf';
+const PDF_DEFAULT = '/certificado-oficial.pdf';
 
 export const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;

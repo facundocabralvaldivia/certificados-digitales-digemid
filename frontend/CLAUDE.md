@@ -1,10 +1,12 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+> **Alcance:** frontend **cert-demo** (certificados DIGEMID). Proxy: `/api/v1/admin` y `/api/v1/verificacion` → `:8002` (Node); `/api/v1/certificados` → `:8001` (demo FastAPI, opcional). Output: `dist/cert-demo`. Ver `../README.md`.
+
+This file provides guidance to Claude Code when working with code in this repository.
 
 ## Qué es este proyecto
 
-Frontend Angular 18 del **Sistema DICER** (Control de Calidad de Medicamentos), plataforma oficial de DIGEMID/MINSA Perú para la vigilancia de lotes farmacéuticos importados. Dos tipos de usuario: **EXTERNO** (laboratorios/titulares que registran solicitudes) e **INTERNO** (evaluadores DIGEMID que emiten dictámenes).
+Frontend Angular 18 del **módulo de certificados digitales verificables** DIGEMID: verificación pública (QR), panel admin interno y lectura blockchain (Polygon Amoy).
 
 ## Comandos clave
 

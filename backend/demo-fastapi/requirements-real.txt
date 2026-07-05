@@ -1,0 +1,7 @@
+# Dependencias de referencia para una implementación Python REAL (PostgreSQL + Polygon).
+# NO necesarias para el demo in-memory. El backend de producción usa Node/Express (../src/).
+web3==7.6.0
+eth-account==0.13.4
+sqlalchemy==2.0.36
+pydantic-settings==2.7.0
+python-dotenv==1.0.1

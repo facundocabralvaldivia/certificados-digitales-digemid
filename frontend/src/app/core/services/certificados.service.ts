@@ -7,14 +7,7 @@ import {
   enriquecerCertificado,
   obtenerMockCertificado,
 } from '../data/demo-certificados.data';
-import {
-  CertificadoPublicoRead,
-  CertificadoAdminRead,
-  CertificadoMetrics,
-  CertificadoEmitirInput,
-  TransaccionBlockchainRead,
-  EstadoCertificado,
-} from '../models/certificados.models';
+import { CertificadoPublicoRead } from '../models/certificados.models';
 
 /**
  * Token de contexto para omitir el envío de credenciales en las consultas
@@ -25,21 +18,15 @@ import {
 export const SKIP_CREDENTIALS = new HttpContextToken<boolean>(() => false);
 
 /**
- * Servicio del dominio CERTIFICADOS.
- * Sigue el patrón de servicio HTTP de AGENTS.md: `inject(HttpClient)`,
- * base derivada de `environment.apiUrl`, tipos desde `core/models`.
+ * Verificación pública de códigos legacy DIGEMID-DEMO-* vía demo FastAPI (:8001).
+ * Si el demo no está levantado, cae a mock local en `demo-certificados.data.ts`.
+ * Códigos UUID usan `VerificacionBlockchainService` (backend Node :8002).
  */
 @Injectable({ providedIn: 'root' })
 export class CertificadosService {
   private readonly http = inject(HttpClient);
   private readonly base = `${environment.apiUrl}/certificados`;
 
-  /* ───────────────  PÚBLICO (sin login) ─────────────── */
-
-  /**
-   * Verificación pública por código del QR. No envía cookies de sesión.
-   * El backend recalcula el hash de integridad contra el anclaje on-chain.
-   */
   verificar(codigo: string): Observable<CertificadoPublicoRead> {
     const context = new HttpContext().set(SKIP_CREDENTIALS, true);
     return this.http
@@ -57,31 +44,5 @@ export class CertificadosService {
           return throwError(() => err);
         }),
       );
-  }
-
-  /* ───────────────  INTERNO (requiere login) ─────────────── */
-
-  metricas(): Observable<CertificadoMetrics> {
-    return this.http.get<CertificadoMetrics>(`${this.base}/admin/metricas`);
-  }
-
-  listar(filtro?: { estado?: EstadoCertificado; q?: string }): Observable<CertificadoAdminRead[]> {
-    const params: Record<string, string> = {};
-    if (filtro?.estado) { params['estado'] = filtro.estado; }
-    if (filtro?.q) { params['q'] = filtro.q; }
-    return this.http.get<CertificadoAdminRead[]>(`${this.base}/admin`, { params });
-  }
-
-  /** Anclaje on-chain: el backend firma con la clave privada custodiada server-side. */
-  emitir(data: CertificadoEmitirInput): Observable<CertificadoAdminRead> {
-    return this.http.post<CertificadoAdminRead>(`${this.base}/admin/emitir`, data);
-  }
-
-  revocar(id: string, motivo: string): Observable<CertificadoAdminRead> {
-    return this.http.post<CertificadoAdminRead>(`${this.base}/admin/${id}/revocar`, { motivo });
-  }
-
-  transacciones(): Observable<TransaccionBlockchainRead[]> {
-    return this.http.get<TransaccionBlockchainRead[]>(`${this.base}/admin/blockchain/transacciones`);
   }
 }

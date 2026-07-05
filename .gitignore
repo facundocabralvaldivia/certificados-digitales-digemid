@@ -4,9 +4,10 @@ frontend/dist/
 frontend/.angular/
 frontend/out-tsc/
 
-# Python (backend)
+# Python (backend demo FastAPI)
+backend/demo-fastapi/.venv/
+backend/demo-fastapi/__pycache__/
 backend/.venv/
-__pycache__/
 *.pyc
 backend/cert_demo.db
 

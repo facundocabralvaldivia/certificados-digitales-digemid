@@ -1,3 +1,5 @@
+# REFERENCIA OBSOLETA: no importado por el demo in-memory. API del contrato desactualizada
+# (emitir/hashDe vs anchorBatch/roots del Solidity real). Ver ../src/blockchain/ (Node).
 """Integración con Polygon vía web3.py.
 
 Responsabilidades:

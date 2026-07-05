@@ -1,3 +1,4 @@
+# REFERENCIA OBSOLETA: no importado por el demo in-memory. Producción usa SQL Server vía Node (../src/db/).
 """Acceso READ-ONLY a la base de datos institucional de DIGEMID.
 
 Este módulo SOLO lee del padrón institucional (establecimientos, técnicos,

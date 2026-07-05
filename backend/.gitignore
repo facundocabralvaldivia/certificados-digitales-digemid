@@ -6,6 +6,6 @@ dist/
 .env
 
 # Python (demo FastAPI legado)
-.venv/
-__pycache__/
+backend/demo-fastapi/.venv/
+backend/demo-fastapi/__pycache__/
 *.pyc

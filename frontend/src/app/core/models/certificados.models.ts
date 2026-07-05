@@ -121,9 +121,3 @@ export interface TransaccionBlockchainRead {
   registrado_en: string;         // ISO-8601
   explorer_url: string;
 }
-
-/** Payload para emitir un nuevo certificado (POST interno). */
-export interface CertificadoEmitirInput {
-  ruc: string;                   // el backend resuelve el resto desde la BD DIGEMID
-  vigencia_meses: number;
-}

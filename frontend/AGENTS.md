@@ -1,18 +1,12 @@
-# AGENTS.md — Guía para agentes IA en DICER-FRONT
+# AGENTS.md — Guía para agentes IA en cert-demo
 
-Este archivo está dirigido a agentes de IA (Claude Code, Cursor, Copilot, etc.) que continúen el desarrollo de este proyecto. Lee esto antes de tocar cualquier archivo.
+> **Alcance de este repo:** mockup standalone **cert-demo** (módulo de certificados DIGEMID). No incluye `modules/dicer/` ni el backend FastAPI monolítico de DICER. Backend producción: Node/Express en `../backend/src/` (:8002). Demo FastAPI opcional: `../backend/demo-fastapi/` (:8001). Ver `../README.md`.
+
+Este archivo hereda convenciones de DICER-FRONT; aplica solo lo que exista en este workspace.
 
 ---
 
-## Contexto del sistema
-
-**DICER** es el frontend Angular 18 de la plataforma oficial DIGEMID/MINSA Perú para control de calidad de medicamentos importados. Opera sobre un backend FastAPI con PostgreSQL y MinIO.
-
-Hay dos tipos de usuario con flujos completamente diferentes:
-- **EXTERNO** (laboratorios): crea solicitudes → sube documentos → registra ensayos
-- **INTERNO** (evaluadores DIGEMID): revisa solicitudes → emite dictamen oficial
-
-Lee el `README.md` en la raíz del repo (`../README.md`) para el contexto completo del dominio y la arquitectura. El backend vive en `../backend/`.
+## Contexto del sistema (cert-demo)
 
 ---
 

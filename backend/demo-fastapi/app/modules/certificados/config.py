@@ -1,3 +1,4 @@
+# REFERENCIA OBSOLETA: solo importado por blockchain.py (también obsoleto). Producción usa ../src/config/env.ts.
 """Configuración del módulo de certificados (credenciales Polygon, contrato).
 
 Toda la configuración se lee de variables de entorno. NUNCA hardcodear la clave

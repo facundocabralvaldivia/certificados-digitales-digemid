@@ -4,7 +4,7 @@ import { authGuard } from './core/guards/auth.guard';
 import {
   CERTIFICADOS_PUBLIC_ROUTES,
   CERTIFICADOS_ADMIN_ROUTES,
-} from './modules/certificados/routes.certificados';
+} from './modules/certificados/certificados.routes';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'auth/login' },

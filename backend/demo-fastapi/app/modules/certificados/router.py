@@ -6,8 +6,6 @@ Dos superficies:
 """
 from __future__ import annotations
 
-from datetime import datetime, timezone
-
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from slowapi import Limiter
 from slowapi.util import get_remote_address

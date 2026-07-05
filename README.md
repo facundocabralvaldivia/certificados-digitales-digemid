@@ -1,65 +1,57 @@
-# Mockup — Certificados Digitales DIGEMID (standalone)
+# Certificados Digitales DIGEMID
 
-Aplicación **autónoma y ejecutable** para demostrar el módulo de **certificados digitales verificables** de DIGEMID: verificación pública (vía QR), panel administrativo interno y respaldo blockchain (Polygon, **simulado en modo demo**).
+Aplicación para **verificación pública** de certificados farmacéuticos (QR), **panel administrativo** interno y respaldo **blockchain** (Polygon).
 
-> Este es un **mockup standalone** extraído del diseño del sistema DICER. **No** depende de DICER-FRONT ni de su backend. Reutiliza las convenciones documentadas en `frontend/AGENTS.md`, pero corre por sí solo con datos en memoria (sin PostgreSQL ni Polygon real).
+## Arquitectura
 
----
-
-## Estructura del proyecto
-
+```mermaid
+flowchart LR
+  subgraph frontend [Frontend Angular :4200]
+    UI[Verificación + Admin]
+  end
+  subgraph prod [Backend producción Node :8002]
+    API[Express + SQL Server + Merkle + Polygon]
+  end
+  subgraph demo [Demo FastAPI :8001]
+    DemoAPI[In-memory DIGEMID-DEMO-*]
+  end
+  UI -->|"/api/v1/verificacion, /admin"| API
+  UI -->|"/api/v1/certificados/verificar"| DemoAPI
+  UI -->|fallback local| Mock[demo-certificados.data.ts]
 ```
-Blockchain Proyect/
-├── README.md
-├── backend/          ← FastAPI (modo demo in-memory)
-└── frontend/         ← Angular 18 (standalone, Signals)
-```
 
----
+| Componente | Stack | Puerto | Uso |
+|------------|-------|--------|-----|
+| **Frontend** | Angular 18, Tailwind, Signals | 4200 | UI pública + panel admin |
+| **Backend producción** | Node/Express/TS, SQL Server, ethers | **8002** | Verificación UUID, admin, anclaje Polygon |
+| **Demo FastAPI** | Python/FastAPI in-memory | 8001 | Solo códigos legacy `DIGEMID-DEMO-*` (opcional; hay fallback local) |
 
-## ¿Qué se puede ver?
+## URLs de demo
 
 | URL | Descripción |
 |-----|-------------|
-| `http://localhost:4200/verificar/DIGEMID-DEMO-001` | Verificación **pública** (sin login): establecimiento HABILITADO + integridad VERIFICADO |
-| `http://localhost:4200/verificar/DIGEMID-DEMO-002` | Caso negativo: **NO HABILITADO** + integridad **ALTERADO** + colegiatura INACTIVO |
-| `http://localhost:4200/auth/login` | Login **demo** (entra como evaluador INTERNO con un clic) |
-| `http://localhost:4200/app/certificados` | **Panel admin**: métricas, tabla filtrable, log blockchain y preview |
+| `http://localhost:4200/verificar/DIGEMID-DEMO-001` | HABILITADO + VERIFICADO |
+| `http://localhost:4200/verificar/DIGEMID-DEMO-002` | NO HABILITADO + ALTERADO |
+| `http://localhost:4200/auth/login` | Login demo → panel admin |
+| `http://localhost:4200/app/certificados` | Panel: métricas, tabla, transacciones |
 
-Códigos de prueba: `DIGEMID-DEMO-001` … `DIGEMID-DEMO-004`.
-
----
-
-## Stack
-
-| Capa | Tecnología |
-|------|-----------|
-| Frontend | Angular 18 (standalone components, Signals, control flow nuevo) |
-| Estilos | Tailwind CSS 3.4 (tokens `dicer-cert-*`) |
-| Backend | FastAPI (modo demo in-memory) + slowapi (rate limiting) |
-| Blockchain | Simulada (referencia real en `backend/app/modules/certificados/blockchain.py`) |
-| Package manager | **pnpm** (frontend) · Python 3.12 (backend) |
-
----
+Códigos demo: `DIGEMID-DEMO-001` … `005`. Verificación por UUID (producción): ver [`backend/data/README.md`](backend/data/README.md).
 
 ## Cómo ejecutar (Windows / PowerShell)
 
-Necesitas **dos terminales**: una para el backend y otra para el frontend.
+Necesitas **dos terminales** (backend producción + frontend). El demo FastAPI es **opcional** para códigos `DIGEMID-DEMO-*`.
 
-### 1) Backend (FastAPI) — puerto 8001
+### 1) Backend producción (Node) — puerto 8002
 
 ```powershell
 cd backend
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-.\.venv\Scripts\python.exe -m uvicorn main:app --reload --port 8001
+npm install
+copy .env.example .env   # completar DB_* y WALLET_* (ver DATOS_SENSIBLES.md)
+npm run db:seed          # primera vez
+npm run dev
 ```
 
-Verifica: http://localhost:8001/docs · http://localhost:8001/api/v1/certificados/verificar/DIGEMID-DEMO-001
-
-> Si PowerShell bloquea la activación del venv:
-> `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+Verifica: http://localhost:8002/api/v1/health
 
 ### 2) Frontend (Angular) — puerto 4200
 
@@ -69,77 +61,39 @@ pnpm install
 pnpm start
 ```
 
-Abre: **http://localhost:4200/verificar/DIGEMID-DEMO-001**
+Abre: http://localhost:4200/verificar/DIGEMID-DEMO-001
 
-> Si pnpm ignora build scripts (`ERR_PNPM_IGNORED_BUILDS`):
-> ```powershell
-> node node_modules/@angular/cli/bin/ng.js serve --proxy-config proxy.conf.json --host 0.0.0.0 --port 4200
-> ```
+El proxy ([`frontend/proxy.conf.json`](frontend/proxy.conf.json)) enruta:
+- `/api/v1/admin`, `/api/v1/verificacion`, `/api/v1/jobs`, `/api/v1/blockchain` → `:8002`
+- `/api/v1/certificados` → `:8001` (demo FastAPI, opcional)
 
-El dev server proxea `/api/*` → `http://localhost:8001` (ver `frontend/proxy.conf.json`).
+### 3) Demo FastAPI (opcional) — puerto 8001
 
----
-
-## Flujo de demo sugerido
-
-1. Abre `http://localhost:4200/verificar/DIGEMID-DEMO-001` → spinner → ficha del establecimiento, **badge HABILITADO ✅**, indicador de integridad **VERIFICADO 🔒**, bloque blockchain expandible.
-2. Abre `http://localhost:4200/verificar/DIGEMID-DEMO-002` → **NO HABILITADO ❌** + **ALTERADO ⚠️** + colegiatura **Inactivo**.
-3. Ve a `http://localhost:4200/auth/login` → clic en *"Ingresar como evaluador (demo)"* → entra al **panel** (`/app/certificados`).
-4. En el panel: 4 tarjetas de métricas, filtros por estado, búsqueda y log de transacciones. Clic en **"Ver / Previsualizar"** → modal con el certificado + QR.
-
----
-
-## Detalle de carpetas
-
-### `frontend/`
-
-```
-frontend/
-├── package.json · angular.json · tsconfig*.json
-├── tailwind.config.js · postcss.config.js · proxy.conf.json
-├── pnpm-workspace.yaml
-├── AGENTS.md · CLAUDE.md
-└── src/
-    ├── main.ts · index.html · styles.css
-    ├── environments/
-    └── app/
-        ├── core/          ← guards, interceptors, models, services, stores
-        └── modules/       ← auth, shell, certificados
+```powershell
+cd backend/demo-fastapi
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m uvicorn main:app --reload --port 8001
 ```
 
-### `backend/`
+Ver [`backend/demo-fastapi/README.md`](backend/demo-fastapi/README.md).
+
+## Estructura del repo
 
 ```
-backend/
-├── main.py
-├── requirements.txt · .env(.example)
-└── app/modules/certificados/
-    ├── router.py · schemas.py · service.py (demo in-memory)
-    ├── security.py
-    └── blockchain.py · repository.py · config.py
+Blockchain Proyect/
+├── README.md
+├── backend/                 ← Producción (Node/Express, :8002)
+│   ├── src/
+│   ├── contracts/
+│   ├── data/
+│   └── demo-fastapi/        ← Demo Python in-memory (:8001)
+└── frontend/                ← Angular 18 cert-demo
 ```
 
----
+## Seguridad
 
-## Endpoints del backend (modo demo)
-
-Base: `/api/v1`
-
-| Método | Ruta | Auth | Descripción |
-|--------|------|------|-------------|
-| GET | `/certificados/verificar/{codigo}` | Pública (rate-limited 30/min) | Verificación pública |
-| GET | `/certificados/admin/metricas` | Interna | Métricas del dashboard |
-| GET | `/certificados/admin?estado=&q=` | Interna | Listado filtrable |
-| POST | `/certificados/admin/emitir` | Interna | Emitir (simula anclaje) |
-| POST | `/certificados/admin/{id}/revocar` | Interna | Revocar |
-| GET | `/certificados/admin/blockchain/transacciones` | Interna | Log de transacciones |
-| GET | `/api/v1/health` | — | Healthcheck |
-
----
-
-## Notas
-
-- **Modo demo:** los datos viven en memoria (`backend/app/modules/certificados/service.py`). Al reiniciar el backend se regeneran los 4 certificados seed.
-- **Auth demo:** el login no valida contraseña; habilita el rol INTERNO. En producción se usa cookie HttpOnly + JWT (ver `security.py`).
-- **Blockchain demo:** los `tx_hash`, bloques y hashes son deterministas/simulados. La implementación real está documentada en `blockchain.py`.
-- **Seguridad:** no se commitea `.env` con claves reales (`backend/.env` solo tiene valores dummy).
+- **Nunca** commitear `.env` con secretos reales (ya en `.gitignore`).
+- La clave privada de wallet (`WALLET_PRIVATE_KEY`) solo en backend; en producción usar KMS/HSM.
+- Ver [`backend/DATOS_SENSIBLES.md`](backend/DATOS_SENSIBLES.md) para la checklist completa.

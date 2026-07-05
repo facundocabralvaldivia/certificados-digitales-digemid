@@ -26,7 +26,7 @@ from .schemas import (
 _RED = "polygon-amoy"
 _CONTRATO = "0x9A7c4f2eD3b1A0C5e6F8d9B2a1C3E4F5a6B7c8D9"
 _EXPLORER = "https://amoy.polygonscan.com"
-_PDF_DEMO_DEFAULT = "/CERTIFICADO OFICIAL.pdf"
+_PDF_DEMO_DEFAULT = "/certificado-oficial.pdf"
 
 _TECNICO_DEMO_001 = TecnicoAdjunto(
     nombre="Q.F. María Elena Quispe Rojas",
