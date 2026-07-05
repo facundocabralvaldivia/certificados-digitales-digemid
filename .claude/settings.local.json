@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm --version)",
+      "Bash(py --version)",
+      "Bash(python -m venv .venv)",
+      "Bash(./.venv/Scripts/python.exe -m pip install --quiet --upgrade pip)",
+      "Bash(./.venv/Scripts/python.exe -m pip install --quiet -r requirements.txt httpx)",
+      "Bash(./.venv/Scripts/python.exe -c ' *)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm approve-builds *)",
+      "Bash(pnpm run *)",
+      "Bash(node node_modules/@angular/cli/bin/ng.js build --configuration production)",
+      "Bash(./.venv/Scripts/python.exe -m uvicorn main:app --host 127.0.0.1 --port 8000 --log-level warning)",
+      "Bash(node node_modules/@angular/cli/bin/ng.js serve --proxy-config proxy.conf.json --host 127.0.0.1 --port 4200)"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+# Node / Angular (frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/out-tsc/
+
+# Python (backend)
+backend/.venv/
+__pycache__/
+*.pyc
+backend/cert_demo.db
+
+# Entorno (NUNCA commitear secretos reales)
+.env
+backend/.env
+
+# Editor
+.vscode/
+.idea/

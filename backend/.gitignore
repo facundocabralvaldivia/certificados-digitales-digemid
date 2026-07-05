@@ -1,0 +1,11 @@
+# Node
+node_modules/
+dist/
+
+# Entorno (NUNCA commitear secretos reales)
+.env
+
+# Python (demo FastAPI legado)
+.venv/
+__pycache__/
+*.pyc

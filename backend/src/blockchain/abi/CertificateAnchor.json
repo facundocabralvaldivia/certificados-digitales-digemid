@@ -1,0 +1,36 @@
+[
+  {
+    "type": "function",
+    "name": "anchorBatch",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      { "name": "batchId", "type": "bytes32" },
+      { "name": "merkleRoot", "type": "bytes32" }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "roots",
+    "stateMutability": "view",
+    "inputs": [{ "name": "", "type": "bytes32" }],
+    "outputs": [{ "name": "", "type": "bytes32" }]
+  },
+  {
+    "type": "function",
+    "name": "anchoredAt",
+    "stateMutability": "view",
+    "inputs": [{ "name": "", "type": "bytes32" }],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "type": "event",
+    "name": "BatchAnchored",
+    "inputs": [
+      { "name": "batchId", "type": "bytes32", "indexed": true },
+      { "name": "merkleRoot", "type": "bytes32", "indexed": false },
+      { "name": "timestamp", "type": "uint256", "indexed": false }
+    ],
+    "anonymous": false
+  }
+]

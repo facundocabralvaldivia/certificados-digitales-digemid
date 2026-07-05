@@ -1,0 +1,32 @@
+{
+  "/api/v1/verificacion": {
+    "target": "http://127.0.0.1:8002",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/api/v1/jobs": {
+    "target": "http://127.0.0.1:8002",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/api/v1/blockchain": {
+    "target": "http://127.0.0.1:8002",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/api/v1/admin": {
+    "target": "http://127.0.0.1:8002",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/api/v1/certificados": {
+    "target": "http://127.0.0.1:8001",
+    "changeOrigin": true,
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

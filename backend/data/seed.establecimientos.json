@@ -1,0 +1,73 @@
+[
+  {
+    "certificadoId": "7433ea89-1872-4ba2-97aa-55492f7f7c34",
+    "ruc": "20608430301",
+    "nombreComercial": "BOTICA INKAFARMA 0292",
+    "razonSocial": "BOTICAS IP S.A.C.",
+    "direccion": "AV. SAN LUIS NRO. 1981",
+    "ubicacion": "LIMA - LIMA - SAN BORJA",
+    "directorTecnico": "Ponce Torres, Grabiela Susana",
+    "numeroColegiatura": "30279",
+    "estadoColegiatura": "HABIL",
+    "horarioDT": "LUN A VIE: 00:00 A 01:00; DE 07:00 A 24:00; SAB: 00:00 A 01:00; DE 07:00 A 24:00; DOM: 00:00 A 01:00; DE 07:00 A 24:00",
+    "estadoEstablecimiento": "HABILITADO",
+    "emitidoEn": "2026-06-09T10:00:00.000Z"
+  },
+  {
+    "certificadoId": "e8dd2102-006b-4d33-8e8a-834ca8cf6312",
+    "ruc": "20608430301",
+    "nombreComercial": "BOTICA INKAFARMA 0301",
+    "razonSocial": "BOTICAS IP S.A.C.",
+    "direccion": "AV. AVIACION NRO. 3008 DPTO. 1 (URB. SAN BORJA SUR)",
+    "ubicacion": "LIMA - LIMA - SAN BORJA",
+    "directorTecnico": "Vasquez Villanueva, Fanny del Rocio",
+    "numeroColegiatura": "14663",
+    "estadoColegiatura": "HABIL",
+    "horarioDT": "LUN A VIE: 00:01 A 01:00; DE 07:00 A 24:00; SAB: 00:01 A 01:00; DE 07:00 A 24:00; DOM: 00:01 A 01:00; DE 07:00 A 24:00",
+    "estadoEstablecimiento": "HABILITADO",
+    "emitidoEn": "2026-06-09T10:00:00.000Z"
+  },
+  {
+    "certificadoId": "0e770904-c91d-4d1f-a51f-845bbed272c2",
+    "ruc": "20608430301",
+    "nombreComercial": "BOTICA INKAFARMA 0215",
+    "razonSocial": "BOTICAS IP S.A.C.",
+    "direccion": "AV. AVIACION NRO. 3458 (EDIFICIO 90 G.B. LIMATAMBO 2 ETAPA",
+    "ubicacion": "LIMA - LIMA - SAN BORJA",
+    "directorTecnico": "Agreda Montes Margarita Videlmina",
+    "numeroColegiatura": "13852",
+    "estadoColegiatura": "HABIL",
+    "horarioDT": "LUN A VIE: 00:01 A 01:00; DE 07:00 A 24:00; SAB: 00:01 A 01:00; DE 07:00 A 24:00; DOM: 00:01 A 01:00; DE 07:00 A 24:00",
+    "estadoEstablecimiento": "HABILITADO",
+    "emitidoEn": "2026-06-09T10:00:00.000Z"
+  },
+  {
+    "certificadoId": "2ed54eac-674e-4013-a55e-01a5cff93026",
+    "ruc": "20527660107",
+    "nombreComercial": "BOTICA SANTA BEATRIZ",
+    "razonSocial": "BOTICA SANTA BEATRIZ S.A.C.",
+    "direccion": "AV. FITZCARRALD N°507",
+    "ubicacion": "MADRE DE DIOS - TAMBOPATA - TAMBOPATA",
+    "directorTecnico": "Miranda Gomez Marlube Adela",
+    "numeroColegiatura": "12283",
+    "estadoColegiatura": "HABIL",
+    "horarioDT": "LUN A VIE: 07:00 A 15:00; SAB: 07:00 A 15:00; DOM: 07:00 A 15:00",
+    "estadoEstablecimiento": "HABILITADO",
+    "emitidoEn": "2026-06-09T10:00:00.000Z"
+  },
+  {
+    "certificadoId": "7c1e0fa3-dcd2-405a-9991-8b5e092f3bde",
+    "ruc": "20384891943",
+    "nombreComercial": "BOTICA BOTICAS Y SALUD",
+    "razonSocial": "BOTICAS Y SALUD S.A.C.",
+    "direccion": "CAL.LIMA NRO. 185 (CON ESQ. CAL. CAJAMARCA CDRA. 1)",
+    "ubicacion": "ICA - ICA - ICA",
+    "directorTecnico": "Diaz Salazar Pilar del Carmen",
+    "numeroColegiatura": "8894",
+    "estadoColegiatura": "HABIL",
+    "horarioDT": "LUN A VIE: 07:30 A 16:00; SAB: 07:30 A 16:00; DOM: 08:00 A 16:00",
+    "estadoEstablecimiento": "HABILITADO",
+    "emitidoEn": "2026-06-09T10:00:00.000Z"
+  }
+]
+
