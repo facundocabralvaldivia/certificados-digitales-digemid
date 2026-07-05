@@ -6,7 +6,7 @@ import {
 } from '../../../core/models/certificados.models';
 import { VerificacionResponse } from '../../../core/services/verificacion-blockchain.service';
 
-const PDF_DEFAULT = '/certificado-oficial.pdf';
+const PDF_DEFAULT = '/certificado-1.pdf';
 
 export const UUID_RE =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -54,7 +54,7 @@ export function toCertificadoPublico(
     emitido_en: e.emitidoEn,
     vigente_hasta: null,
     consultado_en: new Date().toISOString(),
-    certificado_pdf_url: PDF_DEFAULT,
+    certificado_pdf_url: resp.certificadoPdfUrl || PDF_DEFAULT,
     anexos: [],
   };
 }

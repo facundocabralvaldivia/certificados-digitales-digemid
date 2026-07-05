@@ -34,7 +34,9 @@ async function applySchema(): Promise<void> {
 async function seedEstablecimientos(): Promise<void> {
   const pool = await getPool();
   const raw = readFileSync(join(DATA_DIR, 'seed.establecimientos.json'), 'utf-8');
-  const registros = JSON.parse(raw) as EstablecimientoCanonical[];
+  const registros = JSON.parse(raw) as (EstablecimientoCanonical & {
+    certificadoPdfUrl?: string;
+  })[];
 
   // Reemplaza el seed anterior (sin anclaje activo) para evitar registros duplicados.
   await pool.request().query(`DELETE FROM dbo.Establecimientos WHERE BatchId IS NULL`);
@@ -54,6 +56,7 @@ async function seedEstablecimientos(): Promise<void> {
       .input('horarioDT', sql.NVarChar, r.horarioDT)
       .input('estadoEstablecimiento', sql.NVarChar, r.estadoEstablecimiento)
       .input('emitidoEn', sql.DateTime2, new Date(r.emitidoEn))
+      .input('certificadoPdfUrl', sql.NVarChar, r.certificadoPdfUrl ?? null)
       .query(
         `MERGE dbo.Establecimientos AS t
          USING (SELECT @id AS CertificadoId) AS s ON t.CertificadoId = s.CertificadoId
@@ -62,13 +65,16 @@ async function seedEstablecimientos(): Promise<void> {
             Direccion = @direccion, Ubicacion = @ubicacion, DirectorTecnico = @directorTecnico,
             NumeroColegiatura = @numeroColegiatura, EstadoColegiatura = @estadoColegiatura,
             HorarioDT = @horarioDT, EstadoEstablecimiento = @estadoEstablecimiento,
-            EmitidoEn = @emitidoEn, ActualizadoEn = SYSUTCDATETIME()
+            EmitidoEn = @emitidoEn, CertificadoPdfUrl = @certificadoPdfUrl,
+            ActualizadoEn = SYSUTCDATETIME()
          WHEN NOT MATCHED THEN INSERT
             (CertificadoId, Ruc, NombreComercial, RazonSocial, Direccion, Ubicacion, DirectorTecnico,
-             NumeroColegiatura, EstadoColegiatura, HorarioDT, EstadoEstablecimiento, EmitidoEn)
+             NumeroColegiatura, EstadoColegiatura, HorarioDT, EstadoEstablecimiento, EmitidoEn,
+             CertificadoPdfUrl)
          VALUES
             (@id, @ruc, @nombreComercial, @razonSocial, @direccion, @ubicacion, @directorTecnico,
-             @numeroColegiatura, @estadoColegiatura, @horarioDT, @estadoEstablecimiento, @emitidoEn);`,
+             @numeroColegiatura, @estadoColegiatura, @horarioDT, @estadoEstablecimiento, @emitidoEn,
+             @certificadoPdfUrl);`,
       );
   }
   logger.info('Seed de establecimientos completado', { total: registros.length });

@@ -2,6 +2,7 @@ export const environment = {
   production: false,
   // En dev, proxy.conf.json enruta verificacion/admin -> :8002 y certificados demo -> :8001.
   apiUrl: '/api/v1',
+  publicSiteUrl: 'http://localhost:4200',
 
   // ── Verificacion on-chain (Polygon Amoy en dev) ────────────────────────────
   polygonRpcUrl: 'https://rpc-amoy.polygon.technology',

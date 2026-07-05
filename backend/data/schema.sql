@@ -35,6 +35,13 @@ BEGIN
         CONSTRAINT DF_Est_Ubicacion DEFAULT '';
 END;
 
+-- Migracion: PDF estatico por certificado (no entra al Merkle).
+IF OBJECT_ID('dbo.Establecimientos', 'U') IS NOT NULL
+   AND COL_LENGTH('dbo.Establecimientos', 'CertificadoPdfUrl') IS NULL
+BEGIN
+    ALTER TABLE dbo.Establecimientos ADD CertificadoPdfUrl NVARCHAR(400) NULL;
+END;
+
 IF OBJECT_ID('dbo.Lotes', 'U') IS NULL
 BEGIN
     CREATE TABLE dbo.Lotes (

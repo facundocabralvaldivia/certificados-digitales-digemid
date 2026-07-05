@@ -47,6 +47,7 @@ export async function listarEstablecimientosHandler(req: Request, res: Response)
         anclado: Boolean(r.txHash && r.loteEstado === 'CONFIRMADO'),
         emitido_en: r.emitidoEn,
         emitido_por: 'DIGEMID',
+        certificado_pdf_url: r.certificadoPdfUrl,
       })),
     );
   } catch (err) {

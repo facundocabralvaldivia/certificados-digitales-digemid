@@ -233,7 +233,7 @@ export class CertDashboardComponent implements OnInit {
       emitido_en: cert.emitido_en ?? new Date().toISOString(),
       vigente_hasta: null,
       consultado_en: new Date().toISOString(),
-      certificado_pdf_url: '/certificado-oficial.pdf',
+      certificado_pdf_url: cert.certificado_pdf_url ?? '/certificado-1.pdf',
       anexos: [],
     };
   }

@@ -1,23 +1,29 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, computed, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  computed,
+  signal,
+} from '@angular/core';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 import { CertificadoPublicoRead } from '../../../core/models/certificados.models';
+import { environment } from '../../../../environments/environment';
 
 /**
  * Previsualización del certificado físico + QR antes de emitir (panel INTERNO).
- * Reproduce a escala el documento que se imprimirá y se pegará en el local.
- *
- * NOTA QR: el cuadro del QR es un marcador visual. En el repo real se genera con
- * `angularx-qrcode` (instalar con `pnpm add angularx-qrcode`, NUNCA npm) usando
- * como contenido la URL pública `…/verificar/{codigo_verificacion}`.
+ * El QR apunta a la URL pública de verificación del certificado.
  */
 @Component({
   selector: 'app-cert-preview',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [QRCodeComponent],
   template: `
     @if (cert(); as c) {
       <div class="space-y-4">
-        <!-- Documento (proporción de impresión) -->
         <article class="mx-auto max-w-md overflow-hidden rounded-2xl border-2 border-dicer-cert-primary bg-white shadow-lg">
           <header class="bg-dicer-cert-primary px-6 py-4 text-center text-white">
             <p class="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-dicer-cert-mint">
@@ -48,14 +54,14 @@ import { CertificadoPublicoRead } from '../../../core/models/certificados.models
               </div>
             </dl>
 
-            <!-- Marcador QR -->
             <div class="flex flex-col items-center gap-1">
-              <div
-                class="grid h-28 w-28 place-items-center rounded-lg border-2 border-dicer-cert-primary bg-[repeating-conic-gradient(#0F4164_0_25%,#fff_0_50%)] bg-[length:14px_14px]"
+              <qrcode
+                [qrdata]="urlVerificacion()"
+                [width]="112"
+                [errorCorrectionLevel]="'M'"
+                cssClass="rounded-lg border-2 border-dicer-cert-primary"
                 aria-label="Código QR de verificación"
-              >
-                <span class="rounded bg-white px-1 text-[0.55rem] font-bold text-dicer-cert-primary">QR</span>
-              </div>
+              />
               <span class="font-mono text-[0.55rem] text-dicer-cert-secondary">{{ c.codigo_verificacion }}</span>
             </div>
           </div>
@@ -68,7 +74,6 @@ import { CertificadoPublicoRead } from '../../../core/models/certificados.models
           </div>
         </article>
 
-        <!-- Acción de emisión o enlace público -->
         @if (!soloLectura) {
           <div class="mx-auto flex max-w-md items-center gap-3">
             <button
@@ -123,11 +128,19 @@ export class CertPreviewComponent {
 
   protected confirmarEmision(): void {
     const c = this._cert();
-    if (c) { this.emitir.emit(c.codigo_verificacion); }
+    if (c) {
+      this.emitir.emit(c.codigo_verificacion);
+    }
+  }
+
+  protected urlVerificacion(): string {
+    const c = this._cert();
+    if (!c) return '';
+    const base = environment.publicSiteUrl.replace(/\/$/, '');
+    return `${base}/verificar/${encodeURIComponent(c.codigo_verificacion)}`;
   }
 
   protected urlPublica(): string {
-    const c = this._cert();
-    return c ? `/verificar/${encodeURIComponent(c.codigo_verificacion)}` : '#';
+    return this.urlVerificacion() || '#';
   }
 }

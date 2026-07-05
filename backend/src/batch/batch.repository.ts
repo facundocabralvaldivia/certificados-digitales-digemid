@@ -126,6 +126,9 @@ export async function getVerificacion(certificadoId: string): Promise<Verificaci
     blockNumber: lote.BlockNumber !== null ? Number(lote.BlockNumber) : null,
     red: lote.Red,
     ancladoEn: new Date(lote.AncladoEn).toISOString(),
+    certificadoPdfUrl: row.CertificadoPdfUrl
+      ? String(row.CertificadoPdfUrl)
+      : '/certificado-1.pdf',
     establecimiento: toCanonical(row),
     merkleProof,
   };
@@ -140,6 +143,7 @@ export interface EstablecimientoAdminRow {
   estadoEstablecimiento: string;
   estadoColegiatura: string;
   emitidoEn: string;
+  certificadoPdfUrl: string;
   batchId: string | null;
   txHash: string | null;
   red: string | null;
@@ -173,6 +177,7 @@ export async function listEstablecimientosAdmin(
   let query = `
     SELECT e.CertificadoId, e.Ruc, e.NombreComercial, e.RazonSocial, e.Ubicacion,
            e.EstadoEstablecimiento, e.EstadoColegiatura, e.EmitidoEn, e.BatchId,
+           e.CertificadoPdfUrl,
            l.TxHash, l.Red, l.Estado AS LoteEstado, l.AncladoEn
     FROM dbo.Establecimientos e
     LEFT JOIN dbo.Lotes l ON l.BatchId = e.BatchId
@@ -205,6 +210,9 @@ export async function listEstablecimientosAdmin(
     estadoEstablecimiento: String(row.EstadoEstablecimiento),
     estadoColegiatura: String(row.EstadoColegiatura),
     emitidoEn: new Date(row.EmitidoEn as string).toISOString(),
+    certificadoPdfUrl: row.CertificadoPdfUrl
+      ? String(row.CertificadoPdfUrl)
+      : '/certificado-1.pdf',
     batchId: row.BatchId ? String(row.BatchId) : null,
     txHash: row.TxHash ? String(row.TxHash) : null,
     red: row.Red ? String(row.Red) : null,

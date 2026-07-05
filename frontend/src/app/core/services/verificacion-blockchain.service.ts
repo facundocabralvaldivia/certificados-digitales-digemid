@@ -27,6 +27,7 @@ export interface VerificacionResponse {
   blockNumber: number | null;
   red: string;
   ancladoEn: string;
+  certificadoPdfUrl: string;
   establecimiento: EstablecimientoCanonical;
   merkleProof: ProofStep[];
 }

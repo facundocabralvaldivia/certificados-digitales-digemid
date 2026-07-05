@@ -2,6 +2,7 @@ export const environment = {
   production: true,
   apiUrl:
     'https://cert-digemid-api-ddg7b2gqamedgtbj.brazilsouth-01.azurewebsites.net/api/v1',
+  publicSiteUrl: 'https://witty-sea-0ecb8120f.7.azurestaticapps.net',
 
   // Polygon Amoy (demo pública). Cambiar a PoS mainnet cuando pase a producción real.
   polygonRpcUrl: 'https://rpc-amoy.polygon.technology',

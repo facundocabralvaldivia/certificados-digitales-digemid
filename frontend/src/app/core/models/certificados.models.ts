@@ -96,6 +96,7 @@ export interface CertificadoAdminRead {
   anclado?: boolean;
   emitido_en: string | null;
   emitido_por: string;           // usuario INTERNO que emitió
+  certificado_pdf_url?: string;
 }
 
 /** Métricas agregadas para el dashboard del panel interno. */
